@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './products/products.module';
-import { join } from 'path';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -20,7 +20,8 @@ import { join } from 'path';
         'dist/migration/*{.ts,.js}'
       ]
     }),
-    ProductsModule
+    ProductsModule,
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],

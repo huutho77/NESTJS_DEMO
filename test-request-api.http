@@ -15,16 +15,16 @@ POST {{basic_url}}/products/create
 Content-Type: application/json
 
 {
-  "name": "iPhone 12 256GB",
+  "name": "iPhone 12 512GB",
   "quantity": 100,
-  "price": 9000000,
+  "price": 19000000,
   "description": "Hang nhap khau"
 }
 
 ###
 # Update product
 # Route: /api/products/update/:id
-PUT {{basic_url}}/products/update/11
+PUT {{basic_url}}/products/update/1b3f987d-9313-4df2-b9a8-efe15eb561ec
 Content-Type: application/json
 
 {
@@ -37,4 +37,7 @@ Content-Type: application/json
 
 # Delete product
 # route /api/produtcs/delete/:id
-DELETE {{basic_url}}/products/delete/9
+DELETE {{basic_url}}/products/delete/1b3f987d-9313-4df2-b9a8-efe15eb561ec
+
+###
+# Create new user 

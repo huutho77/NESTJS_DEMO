@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 import { CreateProductDTO } from '../dto/create-product.dto';
 import { UpdateProductDTO } from '../dto/update-product.dto';
@@ -14,7 +15,7 @@ export class ProductsService {
     return this.productRepository.find();
   }
 
-  async findProductById(id: number): Promise<Product | null> {
+  async findProductById(id: string): Promise<Product | null> {
     try {
       const product = await this.productRepository.findOneOrFail({ id });
       return product;
@@ -24,16 +25,17 @@ export class ProductsService {
     }
   }
 
-  createNewProduct(newProduct: CreateProductDTO): Promise<Product> {
+  async createNewProduct(newProduct: CreateProductDTO): Promise<Product> {
     let product: Product = this.productRepository.create(newProduct);
 
+    product.id = uuidv4();
     product.create_At = new Date(Date.now());
     product.update_At = new Date(Date.now());
 
-    return this.productRepository.save(product);
+    return await this.productRepository.save(product);
   }
 
-  async updateProduct(id: number, dataChange: UpdateProductDTO): Promise<Product> {
+  async updateProduct(id: string, dataChange: UpdateProductDTO): Promise<Product> {
     let updateProduct = await this.findProductById(id);
     console.log("Before update: ", updateProduct);
 
@@ -46,10 +48,10 @@ export class ProductsService {
 
     console.log("After update: ", updateProduct);
 
-    return this.productRepository.save(updateProduct);
+    return await this.productRepository.save(updateProduct);
   }
 
-  async deleteProduct(id: number) {
+  async deleteProduct(id: string) {
     let productDelete = await this.findProductById(id);
     this.productRepository.remove(productDelete);
     return await this.findAllProducts();

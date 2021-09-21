@@ -14,7 +14,7 @@ export class ProductsController {
 
   @Get(':id')
   getProductById(@Param('id') id: string) {
-    let product = this.productService.findProductById(+id);
+    let product = this.productService.findProductById(id);
     return product;
   }
 
@@ -25,11 +25,11 @@ export class ProductsController {
 
   @Put('update/:id')
   updateProduct(@Param('id') id: string, @Body() body: UpdateProductDTO) {
-    return this.productService.updateProduct(+id, body);
+    return this.productService.updateProduct(id, body);
   }
 
   @Delete('delete/:id')
   deleteItem(@Param('id') id: string) {
-    return this.productService.deleteProduct(+id);
+    return this.productService.deleteProduct(id);
   }
 }
