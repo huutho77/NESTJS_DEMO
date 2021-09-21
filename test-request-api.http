@@ -1,0 +1,40 @@
+@basic_url = http://127.0.0.1:3000/api
+
+# Get all products
+GET {{basic_url}}/products
+
+###
+
+# Get product by id
+GET {{basic_url}}/products/10
+
+###
+
+# Create new product
+POST {{basic_url}}/products/create
+Content-Type: application/json
+
+{
+  "name": "iPhone 12 256GB",
+  "quantity": 100,
+  "price": 9000000,
+  "description": "Hang nhap khau"
+}
+
+###
+# Update product
+# Route: /api/products/update/:id
+PUT {{basic_url}}/products/update/11
+Content-Type: application/json
+
+{
+  "name":"iPhone 12 Pro Max",
+  "quantity":"16",
+  "price":"12000000"
+}
+
+###
+
+# Delete product
+# route /api/produtcs/delete/:id
+DELETE {{basic_url}}/products/delete/9
