@@ -40,4 +40,22 @@ Content-Type: application/json
 DELETE {{basic_url}}/products/delete/1b3f987d-9313-4df2-b9a8-efe15eb561ec
 
 ###
-# Create new user 
+# Create new user (Register)
+# Route: /api/user/register
+POST {{basic_url}}/users/register
+Content-Type: application/json
+
+{
+  "username":"tnguyen79",
+  "password":"123456"
+}
+
+###
+# Login
+POST {{basic_url}}/users/login
+Content-Type: application/json
+
+{
+  "username":"tnguyen80",
+  "password":"123456"
+}
