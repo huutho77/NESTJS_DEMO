@@ -46,7 +46,7 @@ POST {{basic_url}}/users/register
 Content-Type: application/json
 
 {
-  "username":"tnguyen79",
+  "username":"tnguyen80",
   "password":"123456"
 }
 
@@ -56,6 +56,6 @@ POST {{basic_url}}/users/login
 Content-Type: application/json
 
 {
-  "username":"tnguyen80",
+  "username":"tnguyen79",
   "password":"123456"
 }

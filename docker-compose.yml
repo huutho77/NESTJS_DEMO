@@ -5,7 +5,7 @@ services:
     image: mysql:5.7.10
     container_name: app-mysql-db
     ports:
-      - 3307:3306
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_USER: 'thonguyen'
@@ -28,7 +28,7 @@ services:
       - mysql-internal
     depends_on:
       - mysql-db
-    
+
 networks:
   mysql-internal:
     driver: bridge
