@@ -1,0 +1,15 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "username": "root",
+    "password": "P@ssword@123",
+    "database": "demo_nestjs",
+    "entities": [
+        "dist/**/*.entity.js"
+    ],
+    "synchronize": true,
+    "migrationsRun": true,
+    "migrations": [
+        "dist/migration/*{.ts,.js}"
+    ]
+}
