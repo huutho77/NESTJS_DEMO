@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  mysql-db:
+    image: mysql:5.7.10
+    container_name: app-mysql-db
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: 'thonguyen'
+      MYSQL_PASSWORD: 'P@ssword@123'
+      MYSQL_DATABASE: 'demo_nestjs'
+    volumes:
+      - ./docker/mysql_data:/var/lib/mysql
+    networks:
+      - mysql-internal
+
+  mysql-gui:
+    image: phpmyadmin:5.1.1-apache
+    container_name: phpmyadmin-gui
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: mysql-db
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - mysql-internal
+    depends_on:
+      - mysql-db
+    
+networks:
+  mysql-internal:
+    driver: bridge
