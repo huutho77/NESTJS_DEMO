@@ -1,7 +1,7 @@
 # compiled output
 /dist
 /node_modules
-/mysql_data
+/docker/mysql_data
 
 # Logs
 logs
