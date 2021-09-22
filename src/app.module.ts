@@ -4,24 +4,14 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      username: 'root',
-      password: 'P@ssword@123',
-      database: 'demo_nestjs',
-      entities: ['dist/**/*.entity.js'],
-      synchronize: true,
-      migrationsRun: true,
-      migrations: [
-        'dist/migration/*{.ts,.js}'
-      ]
-    }),
+    TypeOrmModule.forRoot(),
     ProductsModule,
-    UsersModule
+    UsersModule,
+    CategoriesModule
   ],
   controllers: [AppController],
   providers: [AppService],
