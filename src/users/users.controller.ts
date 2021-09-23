@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Post, Put, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDTO } from '../dto/user-create.dto';
-import { User } from '../entities/user.entity';
+import { Request } from 'express';
+import { AuthDTO } from 'src/dto/auth.dto';
 
 @Controller('users')
 export class UsersController {
@@ -13,11 +14,9 @@ export class UsersController {
     return this.userService.createNewUser(body);
   }
 
-  @Post('login')
-  loginUser(@Body() body) {
-    console.log('This is body ---> ', body);
-
-    this.userService.authenticate(body);
+  @Post('/auth/login')
+  signinLocal(@Body() body: AuthDTO) {
+    return this.userService.signinLocal(body);
   }
 
 }
