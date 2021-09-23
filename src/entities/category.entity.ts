@@ -1,8 +1,7 @@
-import { type } from "os";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "./product.entity";
 
-@Entity()
+@Entity({ name: 'categories' })
 export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -15,7 +14,7 @@ export class Category {
 
   @Column()
   create_At: Date;
-  
+
   @Column()
   updatee_At: Date;
 

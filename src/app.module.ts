@@ -9,11 +9,13 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: 'dev.env'
+    }),
     TypeOrmModule.forRoot(),
     ProductsModule,
     UsersModule,
-    CategoriesModule
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

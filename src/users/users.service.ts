@@ -1,10 +1,11 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { randomUUID } from 'crypto';
 import { CreateUserDTO } from 'src/dto/user-create.dto';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcryptjs from 'bcryptjs';
+import { AuthDTO } from 'src/dto/auth.dto';
 
 @Injectable()
 export class UsersService {
@@ -29,26 +30,27 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async authenticate(queryData: User): Promise<User> {
-    let user: User;
-
-    user = await this.userRepository.findOne({ username: queryData.username });
-
-    if (!user) {
-      throw new NotFoundException();
-    }
-
-    return null;
-  }
-
   private async checkUserExist(username: string): Promise<boolean> {
     let user = await this.userRepository.findOne({ username });
 
-    if (user) {
-      return true;
-    } else {
-      return false;
+    if (user) { return true; }
+    else { return false; }
+  }
+
+  async signinLocal(authData: AuthDTO) {
+    const user: User = await this.userRepository.findOne({ username: authData.username });
+
+    if (!user) {
+      throw new UnauthorizedException('Username or password is wrong..');
     }
+    
+    let decodePassword = await bcryptjs.compare(authData.password, user.password);
+
+    if (!decodePassword) {
+      throw new UnauthorizedException('Username or password is wrong.');
+    }
+
+    return user;
   }
 
 }

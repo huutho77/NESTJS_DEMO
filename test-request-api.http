@@ -46,16 +46,20 @@ POST {{basic_url}}/users/register
 Content-Type: application/json
 
 {
-  "username":"tnguyen80",
-  "password":"123456"
+  "firstname":"",
+  "lastname":"",
+  "address":"",
+  "phone_number":"",
+  "username":"tnguyen79",
+  "password":"huutho!0707"
 }
 
 ###
 # Login
-POST {{basic_url}}/users/login
+POST {{basic_url}}/users/auth/login
 Content-Type: application/json
 
 {
-  "username":"tnguyen79",
-  "password":"123456"
+  "username":"tnguyen77",
+  "password":"huutho!0707"
 }

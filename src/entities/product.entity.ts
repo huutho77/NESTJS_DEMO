@@ -15,8 +15,13 @@ export class Product {
   @Column({ default: 0 })
   price: number;
 
+  percent_discount: number;
+
   @Column({ default: '' })
   description: string;
+
+  @Column({ default: 0 })
+  amount_view: number;
 
   @Column({ type: 'datetime', nullable: true })
   create_At: Date;
