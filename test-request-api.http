@@ -4,12 +4,10 @@
 GET {{basic_url}}/products
 
 ###
-
 # Get product by id
 GET {{basic_url}}/products/10
 
 ###
-
 # Create new product
 POST {{basic_url}}/products/create
 Content-Type: application/json
@@ -34,7 +32,6 @@ Content-Type: application/json
 }
 
 ###
-
 # Delete product
 # route /api/produtcs/delete/:id
 DELETE {{basic_url}}/products/delete/1b3f987d-9313-4df2-b9a8-efe15eb561ec
@@ -46,12 +43,13 @@ POST {{basic_url}}/users/register
 Content-Type: application/json
 
 {
-  "firstname":"",
-  "lastname":"",
-  "address":"",
-  "phone_number":"",
-  "username":"tnguyen79",
-  "password":"huutho!0707"
+  "firstname":"Huu Tho",
+  "lastname":"Nguyen",
+  "address":"Ho Chi Minh City",
+  "phone_number":"0934138065",
+  "email":"huutho1999@gmail.com",
+  "username":"tnguyen",
+  "password":"123456"
 }
 
 ###
