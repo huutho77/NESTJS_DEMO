@@ -7,10 +7,10 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: admin
       MYSQL_USER: 'thonguyen'
-      MYSQL_PASSWORD: 'P@ssword@123'
-      MYSQL_DATABASE: 'demo_nestjs'
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: demo_nestjs
     volumes:
       - ./docker/mysql_data:/var/lib/mysql
     networks:
@@ -23,7 +23,7 @@ services:
       - 8080:80
     environment:
       PMA_HOST: mysql-db
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: 'admin'
     networks:
       - mysql-internal
     depends_on:
