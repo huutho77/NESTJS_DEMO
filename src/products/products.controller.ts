@@ -11,8 +11,6 @@ export class ProductsController {
   @UseGuards(AuthGuard('jwt'))
   @Get()
   async getAllProducts(@Request() req: any) {
-    console.log('Type of ', typeof req);
-    console.log(req);
     return await this.productService.findAllProducts();
   }
 
