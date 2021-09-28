@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Post, Param, Delete, Put } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Delete, Put, UseGuards, Request } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateProductDTO } from '../dto/create-product.dto';
 import { UpdateProductDTO } from '../dto/update-product.dto';
 import { ProductsService } from './products.service';
@@ -7,8 +8,11 @@ import { ProductsService } from './products.service';
 export class ProductsController {
   constructor(private productService: ProductsService) { }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
-  async getAllProducts() {
+  async getAllProducts(@Request() req: any) {
+    console.log('Type of ', typeof req);
+    console.log(req);
     return await this.productService.findAllProducts();
   }
 

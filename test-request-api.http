@@ -1,7 +1,9 @@
-@basic_url = http://127.0.0.1:3000/api
+@basic_url = http://127.0.0.1:6000/api
+@accessToken = 
 
 # Get all products
 GET {{basic_url}}/products
+Authorization: Bearer {{accessToken}}
 
 ###
 # Get product by id
@@ -53,8 +55,8 @@ Content-Type: application/json
 }
 
 ###
-# Login
-POST {{basic_url}}/users/auth/login
+# Login and generate token
+POST {{basic_url}}/auth/login
 Content-Type: application/json
 
 {

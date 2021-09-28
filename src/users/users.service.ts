@@ -5,14 +5,11 @@ import { CreateUserDTO } from 'src/dto/user-create.dto';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcryptjs from 'bcryptjs';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
-    private jwt: JwtService) { }
+    @InjectRepository(User) private userRepository: Repository<User>) { }
 
   async createNewUser(newUser: CreateUserDTO): Promise<User> {
     if (await this.checkExist(newUser.username)) {
@@ -42,37 +39,10 @@ export class UsersService {
     return await this.userRepository.findOne({ username });
   }
 
-  async signinLocal(username: string, password: string): Promise<string> {
-    let accessToken = '';
-
-    let user = await this.getUser(username);
-
-    if (!user || !await bcryptjs.compare(password, user.password)){
-      throw new BadRequestException('Username or password is invalid.')
-    }
-
-    if (user && await bcryptjs.compare(password, user.password)) {
-      let payload = {
-        id: user.id,
-        username,
-        fullname: `${user.firstname} ${user.lastname}`,
-        phonenumber: user.phone_number
-      };
-
-      accessToken = this.jwt.sign(payload, { expiresIn: '120s' });
-    }
-
-    return accessToken;
-  }
-
   validationUser(username: string, password: string): boolean {
-    if (!username && !password) {
-      return false;
-    }
+    if (!username && !password) { return false; }
 
-    if (username.length < 6 || password.length < 8) {
-      return false
-    }
+    if (username.length < 6 || password.length < 8) { return false }
 
     return true;
   }

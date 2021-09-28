@@ -18,18 +18,4 @@ export class UsersController {
     return this.userService.createNewUser(body);
   }
 
-  @Post('/auth/login')
-  async signinLocal(
-    @Body('username') username: string,
-    @Body('password') password: string) {
-
-    if (!await this.userService.checkExist(username)) {
-      throw new BadRequestException('Username or password incorrect.');
-    }
-
-    const accessToken = await this.userService.signinLocal(username, password);
-
-    return accessToken;
-  }
-
 }

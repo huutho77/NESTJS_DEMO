@@ -8,10 +8,7 @@ import { UsersService } from './users.service';
 @Module({
   controllers: [UsersController],
   providers: [UsersService],
-  imports: [
-    TypeOrmModule.forFeature([User]),
-    JwtModule.register({
-      secret: 'vB#QX5EUph$S6TqFbCGbEZY4X%xbgZ(7',
-    }),]
+  imports: [TypeOrmModule.forFeature([User])],
+  exports: [TypeOrmModule]
 })
-export class UsersModule {}
+export class UsersModule { }
