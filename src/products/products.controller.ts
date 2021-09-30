@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Param, Delete, Put, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateProductDTO } from '../dto/create-product.dto';
-import { UpdateProductDTO } from '../dto/update-product.dto';
+import { CreateProductDTO } from '../dto/product-create.dto';
+import { UpdateProductDTO } from '../dto/product-update.dto';
 import { ProductsService } from './products.service';
 
 @Controller('products')

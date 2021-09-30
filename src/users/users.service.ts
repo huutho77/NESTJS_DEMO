@@ -5,6 +5,7 @@ import { CreateUserDTO } from 'src/dto/user-create.dto';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcryptjs from 'bcryptjs';
+import { UpdateUserDTO } from 'src/dto/user-update.dto';
 
 @Injectable()
 export class UsersService {
@@ -45,6 +46,20 @@ export class UsersService {
     if (username.length < 6 || password.length < 8) { return false }
 
     return true;
+  }
+
+  async updateUser(userId: string, userChange: UpdateUserDTO): Promise<User> {
+    let userUpdate = await this.userRepository.findOne({ id: userId });
+
+    console.log(userUpdate);
+    console.log(userChange);
+
+    return null;
+  }
+
+  async updatePassword(): Promise<User> {
+
+    return null;
   }
 
 }

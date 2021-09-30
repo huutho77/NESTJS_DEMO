@@ -3,25 +3,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
-import { CreateProductDTO } from '../dto/create-product.dto';
-import { UpdateProductDTO } from '../dto/update-product.dto';
+import { CreateProductDTO } from '../dto/product-create.dto';
+import { UpdateProductDTO } from '../dto/product-update.dto';
 import { Product } from '../entities/product.entity';
 
 @Injectable()
 export class ProductsService {
   constructor(@InjectRepository(Product) private productRepository: Repository<Product>) { }
 
-  findAllProducts(): Promise<Product[]> {
-    return this.productRepository.find();
+  async findAllProducts(): Promise<Product[]> {
+    return await this.productRepository.find();
   }
 
-  async findProductById(id: string): Promise<Product | null> {
-    try {
-      const product = await this.productRepository.findOneOrFail({ id });
-      return product;
-    } catch (error) {
-      throw new NotFoundException();
+  async findProductById(id: string): Promise<Product> {
+    const product = await this.productRepository.findOne({ id });
+
+    if (!product) {
+      throw new NotFoundException('Product already exist.');
     }
+
+    return product;
   }
 
   async createNewProduct(newProduct: CreateProductDTO): Promise<Product> {

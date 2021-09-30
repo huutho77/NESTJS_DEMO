@@ -22,4 +22,12 @@ export class AuthController {
     return accessToken;
   }
 
+  // Generate RefreshToken
+  @Post('refreshToken')
+  async generateRefreshToken(): Promise<string> {
+    let refreshToken = '';
+
+    return refreshToken;
+  }
+
 }
