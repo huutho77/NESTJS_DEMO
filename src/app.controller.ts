@@ -1,5 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller(['', 'api'])
@@ -8,6 +7,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return 'This is the first request from server-side.';
+    return 'Hello World!';
   }
 }
