@@ -1,11 +1,11 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import {  ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { randomUUID } from 'crypto';
-import { CreateUserDTO } from 'src/dto/user-create.dto';
-import { User } from 'src/entities/user.entity';
+import { CreateUserDTO } from '../dto/user-create.dto';
+import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcryptjs from 'bcryptjs';
-import { UpdateUserDTO } from 'src/dto/user-update.dto';
+import { UpdateUserDTO } from '../dto/user-update.dto';
 
 @Injectable()
 export class UsersService {
