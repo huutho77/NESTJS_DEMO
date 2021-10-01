@@ -10,7 +10,7 @@ export class ProductsController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  async getAllProducts(@Request() req: any) {
+  async getAllProducts() {
     return await this.productService.findAllProducts();
   }
 

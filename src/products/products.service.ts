@@ -50,7 +50,7 @@ export class ProductsService {
 
   async deleteProduct(id: string) {
     let productDelete = await this.findProductById(id);
-    this.productRepository.remove(productDelete);
+    await this.productRepository.remove(productDelete);
     return await this.findAllProducts();
   }
 
