@@ -12,14 +12,14 @@ export class ProductsService {
   constructor(@InjectRepository(Product) private productRepository: Repository<Product>) { }
 
   async findAllProducts(): Promise<Product[]> {
-    return await this.productRepository.find();
+    return await this.productRepository.find({});
   }
 
   async findProductById(id: string): Promise<Product> {
     const product = await this.productRepository.findOne({ id });
 
     if (!product) {
-      throw new NotFoundException('Product already exist.');
+      throw new NotFoundException('Product not already exist.');
     }
 
     return product;
@@ -54,7 +54,7 @@ export class ProductsService {
     return await this.findAllProducts();
   }
 
-  private checkChangeData(oldValue: any, newValue: any): any {
+  checkChangeData(oldValue: any, newValue: any): any {
     if (!newValue) { return oldValue; }
 
     if (oldValue !== newValue) {

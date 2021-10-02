@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { async } from 'rxjs';
+import { Repository } from 'typeorm';
 import { Product } from '../entities/product.entity';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
@@ -16,7 +16,7 @@ describe('ProductsController', () => {
         ProductsService,
         {
           provide: getRepositoryToken(Product),
-          useValue: {}
+          useClass: Repository
         },
       ]
     }).compile();
@@ -35,8 +35,7 @@ describe('ProductsController', () => {
     it('should return array', async () => {
       const results = [];
 
-      jest.spyOn(productService, 'findAllProducts').mockImplementation(async () => results);
-
+      jest.spyOn(productService, 'findAllProducts').mockResolvedValue(results);
       expect(await productController.getAllProducts()).toBe(results);
     });
   });
