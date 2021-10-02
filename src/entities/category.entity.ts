@@ -19,5 +19,5 @@ export class Category {
   updatee_At: Date;
 
   @OneToMany(() => Product, product => product.category)
-  products: Product[];
+  products?: Product[];
 }
