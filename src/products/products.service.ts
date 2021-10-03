@@ -26,17 +26,18 @@ export class ProductsService {
   }
 
   async createNewProduct(newProduct: CreateProductDTO): Promise<Product> {
+    // Check product exists
+    if (this.productRepository.findOne({ name: newProduct.name })) {
+      throw new ConflictException('Product is already exists.');
+    }
+
     let product = this.productRepository.create(newProduct);
 
     product.id = uuidv4();
     product.create_At = new Date(Date.now());
     product.update_At = new Date(Date.now());
 
-    return this.productRepository.save(product)
-      .catch((error) => {
-        console.error(error);
-        throw new ConflictException('Product already exist.');
-      });
+    return await this.productRepository.save(product);
   }
 
   async updateProduct(id: string, dataChange: UpdateProductDTO): Promise<Product> {
