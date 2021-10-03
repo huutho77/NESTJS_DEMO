@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
@@ -26,13 +26,17 @@ export class ProductsService {
   }
 
   async createNewProduct(newProduct: CreateProductDTO): Promise<Product> {
-    let product: Product = this.productRepository.create(newProduct);
+    let product = this.productRepository.create(newProduct);
 
     product.id = uuidv4();
     product.create_At = new Date(Date.now());
     product.update_At = new Date(Date.now());
 
-    return await this.productRepository.save(product);
+    return this.productRepository.save(product)
+      .catch((error) => {
+        console.error(error);
+        throw new ConflictException('Product already exist.');
+      });
   }
 
   async updateProduct(id: string, dataChange: UpdateProductDTO): Promise<Product> {

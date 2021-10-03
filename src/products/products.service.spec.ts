@@ -6,6 +6,8 @@ import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 import { Repository } from "typeorm";
 import { NotFoundException } from '@nestjs/common';
+import { CreateProductDTO } from 'src/dto/product-create.dto';
+import uuid from "uuid";
 
 describe('ProductsService', () => {
   // Mock data
@@ -32,6 +34,18 @@ describe('ProductsService', () => {
     },
     {
       id: '15177eb7-e174-48ae-a810-7b5a2a7b48df',
+      name: 'Nguyen Huu Tho test 2',
+      quantity: 200,
+      price: 100,
+      amount_view: 0,
+      description: '',
+      percent_discount: 0,
+      create_At: new Date(),
+      update_At: new Date(),
+      category: testCategory,
+    },
+    {
+      id: '98c8c1f5-09ab-4105-92ab-212fa7b3d5f4',
       name: 'Nguyen Huu Tho test 2',
       quantity: 200,
       price: 100,
@@ -172,6 +186,63 @@ describe('ProductsService', () => {
       expect(mockService.deleteProduct).toHaveBeenCalled();
       expect(mockService.deleteProduct).toHaveBeenCalledWith(id);
     });
+
+    it('should return length of array is 1', async () => {
+      const testProduct: Product = {
+        id: '98c8c1f5-09ab-4105-92ab-212fa7b3d5f4',
+        name: 'Nguyen Huu Tho test 2',
+        quantity: 200,
+        price: 100,
+        amount_view: 0,
+        description: '',
+        percent_discount: 0,
+        create_At: new Date(),
+        update_At: new Date(),
+        category: testCategory,
+      };
+
+      let testArray = [
+        {
+          id: '90cc6eec-b1af-4713-8cd6-bd199b765a3e',
+          name: 'Nguyen Huu Tho test 2',
+          quantity: 200,
+          price: 100,
+          amount_view: 0,
+          description: '',
+          percent_discount: 0,
+          create_At: new Date(),
+          update_At: new Date(),
+          category: testCategory,
+        }
+      ];
+
+      jest.spyOn(mockService, 'findProductById').mockResolvedValue(testProduct);
+      jest.spyOn(mockProductRepository, 'remove').mockResolvedValue(testProduct);
+      jest.spyOn(mockService, 'findAllProducts').mockResolvedValue(testArray);
+
+      await mockService.deleteProduct(testProduct.id);
+
+      expect(mockService.findProductById).toHaveBeenCalledWith(testProduct.id);
+      expect(mockService.findAllProducts).toHaveBeenCalled();
+    });
+  });
+
+  describe('createNewProduct', () => {
+    it('should be defined', () => {
+      expect(mockService.createNewProduct).toBeDefined();
+    });
+
+    it('should be called', async () => {
+      let newProduct: CreateProductDTO;
+
+      jest.spyOn(mockService, 'createNewProduct');
+
+      mockService.createNewProduct(newProduct);
+
+      expect(mockService.createNewProduct).toHaveBeenCalled();
+      expect(mockService.createNewProduct).toHaveBeenCalledWith(newProduct);
+    });
+
   });
 
 });
