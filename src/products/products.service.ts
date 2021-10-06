@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,16 +12,12 @@ export class ProductsService {
   constructor(@InjectRepository(Product) private productRepository: Repository<Product>) { }
 
   async findAllProducts(): Promise<Product[]> {
-    return await this.productRepository.find({});
+    return await this.productRepository.find();
   }
 
   async findProductById(id: string): Promise<Product> {
     const product = await this.productRepository.findOne({ id });
-
-    if (!product) {
-      throw new NotFoundException('Product not already exist.');
-    }
-
+    if (!product) { throw new NotFoundException('Product not already exist.'); }
     return product;
   }
 
@@ -61,12 +57,6 @@ export class ProductsService {
 
   checkChangeData(oldValue: any, newValue: any): any {
     if (!newValue) { return oldValue; }
-
-    if (oldValue !== newValue) {
-      return newValue;
-    }
-    else {
-      return oldValue;
-    }
+    return oldValue !== newValue ? newValue : oldValue;
   }
 }
