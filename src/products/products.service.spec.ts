@@ -171,77 +171,56 @@ describe('ProductsService', () => {
     });
   });
 
-  // describe('deleteProduct', () => {
-  //   it('shoule be defined', () => {
-  //     expect(mockService.deleteProduct).toBeDefined();
-  //   });
+  describe('deleteProduct', () => {
+    it('shoule be defined', () => {
+      expect(mockService.deleteProduct).toBeDefined();
+    });
 
-  //   it('shoule be called', () => {
-  //     const id = '25f6b175-f942-4755-8dd5-d4faaa4be3a7';
+    it('shoule be called', () => {
+      const id = '25f6b175-f942-4755-8dd5-d4faaa4be3a7';
+      jest.spyOn(mockProductRepository, 'findOne').mockResolvedValue(testData[0]);
+      jest.spyOn(mockProductRepository, 'remove').mockResolvedValue(testData[0]);
+      jest.spyOn(mockService, 'deleteProduct');
 
-  //     jest.spyOn(mockService, 'deleteProduct');
-  //     mockService.deleteProduct(id);
+      mockService.deleteProduct(id);
 
-  //     expect(mockService.deleteProduct).toHaveBeenCalled();
-  //     expect(mockService.deleteProduct).toHaveBeenCalledWith(id);
-  //   });
+      expect(mockService.deleteProduct).toHaveBeenCalled();
+      expect(mockService.deleteProduct).toHaveBeenCalledWith(id);
+    });
 
-  //   it('should return length of array is 1', async () => {
-  //     const testProduct: Product = {
-  //       id: '98c8c1f5-09ab-4105-92ab-212fa7b3d5f4',
-  //       name: 'Nguyen Huu Tho test 2',
-  //       quantity: 200,
-  //       price: 100,
-  //       amount_view: 0,
-  //       description: '',
-  //       percent_discount: 0,
-  //       create_At: new Date(),
-  //       update_At: new Date(),
-  //       category: testCategory,
-  //     };
+    it('should be handle exception when catch of findOne function', async () => {
+      const id = '25f6b175-f942-4755-8dd5-d4faaa4be3a7';
+      return await mockService.deleteProduct(id).catch(err => {
+        expect(err).toEqual(TypeError('Cannot read property \'findOne\' of undefined'));
+      });
+    });
 
-  //     let testArray = [
-  //       {
-  //         id: '90cc6eec-b1af-4713-8cd6-bd199b765a3e',
-  //         name: 'Nguyen Huu Tho test 2',
-  //         quantity: 200,
-  //         price: 100,
-  //         amount_view: 0,
-  //         description: '',
-  //         percent_discount: 0,
-  //         create_At: new Date(),
-  //         update_At: new Date(),
-  //         category: testCategory,
-  //       }
-  //     ];
+    it('should be handle exception when catch of remove function', async () => {
+      const product = {
+        id: '25f6b175-f942-4755-8dd5-d4faaa4be3a7',
+        name: 'Nguyen Huu Tho test 1',
+        quantity: 200,
+        price: 100,
+        amount_view: 0,
+        description: '',
+        percent_discount: 0,
+        create_At: new Date(),
+        update_At: new Date(),
+        category: testCategory,
+      };
 
-  //     jest.spyOn(mockService, 'findProductById').mockResolvedValue(testProduct);
-  //     jest.spyOn(mockProductRepository, 'remove').mockResolvedValue(testProduct);
-  //     jest.spyOn(mockService, 'findAllProducts').mockResolvedValue(testArray);
+      jest.spyOn(mockProductRepository, 'findOne').mockResolvedValueOnce(product);
 
-  //     await mockService.deleteProduct(testProduct.id);
+      return await mockService.deleteProduct(product.id).catch(err => {
+        expect(err).toEqual(TypeError('Cannot read property \'remove\' of undefined'));
+      });
+    });
 
-  //     expect(mockService.findProductById).toHaveBeenCalledWith(testProduct.id);
-  //     expect(mockService.findAllProducts).toHaveBeenCalled();
-  //   });
-  // });
+    it('should return promise reject', async () => {
+      let id = '6f587f3f-9592-4085-beab-4861fb26d6db';
 
-  // describe('createNewProduct', () => {
-  //   it('should be defined', () => {
-  //     expect(mockService.createNewProduct).toBeDefined();
-  //   });
-
-  //   it('should be called', async () => {
-  //     let newProduct: CreateProductDTO;
-
-  //     jest.spyOn(mockService, 'createNewProduct');
-
-  //     mockService.createNewProduct(newProduct);
-
-  //     expect(mockService.createNewProduct).toHaveBeenCalled();
-  //     expect(mockService.createNewProduct).toHaveBeenCalledWith(newProduct);
-  //   });
-
-  // });
-
+      jest.spyOn(mockProductRepository, 'findOne').mockResolvedValueOnce(undefined);
+      await expect(mockService.deleteProduct(id)).rejects.toThrow(NotFoundException);
+    });
+  });
 });

@@ -50,9 +50,9 @@ export class ProductsService {
   }
 
   async deleteProduct(id: string) {
-    let productDelete = await this.findProductById(id);
-    await this.productRepository.remove(productDelete);
-    return await this.findAllProducts();
+    let productDelete = await this.productRepository.findOne(id);
+    if (!productDelete) { throw new NotFoundException(); }
+    return await this.productRepository.remove(productDelete);
   }
 
   checkChangeData(oldValue: any, newValue: any): any {
