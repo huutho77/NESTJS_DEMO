@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Category } from 'src/entities/category.entity';
+import { Category } from '../entities/category.entity';
 import { Product } from '../entities/product.entity';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 import { Repository } from "typeorm";
-import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { CreateProductDTO } from 'src/dto/product-create.dto';
+import { NotFoundException } from '@nestjs/common';
+import { ProductsModule } from "../products/products.module";
 
 describe('ProductsService', () => {
   // Mock data
