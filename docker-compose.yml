@@ -4,17 +4,18 @@ services:
   mysql-db:
     image: mysql:5.7.10
     container_name: app-mysql-db
+    restart: always
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: 'root'
-      MYSQL_USER: 'thonguyen'
-      MYSQL_PASSWORD: 'P@ssword@123'
-      MYSQL_DATABASE: 'demo_nestjs'
-    volumes:
-      - ./docker/mysql_data:/var/lib/mysql
+      MYSQL_DATABASE: demo_nestjs
+      MYSQL_ROOT_PASSWORD: P@ssword@123
+      MYSQL_USER: thonguyen
+      MYSQL_PASSWORD: admin
     networks:
       - mysql-internal
+    volumes:
+      - ./server/mysqldata:/var/lib/mysql
 
   mysql-gui:
     image: phpmyadmin:5.1.1-apache
@@ -22,8 +23,7 @@ services:
     ports:
       - 8080:80
     environment:
-      PMA_HOST: mysql-db
-      MYSQL_ROOT_PASSWORD: root
+      - PMA_ARBITRARY=1
     networks:
       - mysql-internal
     depends_on:

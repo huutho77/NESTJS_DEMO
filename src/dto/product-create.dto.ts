@@ -5,4 +5,5 @@ export class CreateProductDTO {
   description: string;
   create_At?: Date;
   update_At?: Date;
+  categoryId: string;
 }

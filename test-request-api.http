@@ -1,15 +1,15 @@
-@basic_url = http://127.0.0.1:3000/api
+@basic_url = http://127.0.0.1:6000/api
+@accessToken = 
 
 # Get all products
 GET {{basic_url}}/products
+Authorization: Bearer {{accessToken}}
 
 ###
-
 # Get product by id
 GET {{basic_url}}/products/10
 
 ###
-
 # Create new product
 POST {{basic_url}}/products/create
 Content-Type: application/json
@@ -34,7 +34,6 @@ Content-Type: application/json
 }
 
 ###
-
 # Delete product
 # route /api/produtcs/delete/:id
 DELETE {{basic_url}}/products/delete/1b3f987d-9313-4df2-b9a8-efe15eb561ec
@@ -46,17 +45,18 @@ POST {{basic_url}}/users/register
 Content-Type: application/json
 
 {
-  "firstname":"",
-  "lastname":"",
-  "address":"",
-  "phone_number":"",
-  "username":"tnguyen79",
+  "firstname":"Huu Tho",
+  "lastname":"Nguyen",
+  "address":"Ho Chi Minh City",
+  "phone_number":"0934138065",
+  "email":"huutho1999@gmail.com",
+  "username":"tnguyen77",
   "password":"huutho!0707"
 }
 
 ###
-# Login
-POST {{basic_url}}/users/auth/login
+# Login and generate token
+POST {{basic_url}}/auth/login
 Content-Type: application/json
 
 {

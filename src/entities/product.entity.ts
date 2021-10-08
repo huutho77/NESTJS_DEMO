@@ -15,6 +15,7 @@ export class Product {
   @Column({ default: 0 })
   price: number;
 
+  @Column({ default: 0 })
   percent_discount: number;
 
   @Column({ default: '' })

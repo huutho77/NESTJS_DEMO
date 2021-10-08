@@ -7,6 +7,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return 'This is the first request from server-side.';
+    return 'Hello World!';
   }
 }

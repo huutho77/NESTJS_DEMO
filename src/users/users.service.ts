@@ -1,24 +1,25 @@
-import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { randomUUID } from 'crypto';
-import { CreateUserDTO } from 'src/dto/user-create.dto';
-import { User } from 'src/entities/user.entity';
+import { CreateUserDTO } from '../dto/user-create.dto';
+import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcryptjs from 'bcryptjs';
-import { AuthDTO } from 'src/dto/auth.dto';
+import { UpdateUserDTO } from '../dto/user-update.dto';
 
 @Injectable()
 export class UsersService {
-
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>) { }
 
   async createNewUser(newUser: CreateUserDTO): Promise<User> {
-    if (await this.checkUserExist(newUser.username)) {
-      throw new ConflictException();
+    if (await this.checkExist(newUser.username)) {
+      throw new ConflictException('Username already exist.');
     }
 
-    let user: User = this.userRepository.create(newUser);
+    let user = this.userRepository.create(newUser);
+
+    // Hash password before insert into database.
     let saltOrRounds = await bcryptjs.genSalt(12);
     let hashPassword = await bcryptjs.hash(newUser.password, saltOrRounds);
 
@@ -30,27 +31,35 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  private async checkUserExist(username: string): Promise<boolean> {
+  async checkExist(username: string): Promise<boolean> {
     let user = await this.userRepository.findOne({ username });
-
-    if (user) { return true; }
-    else { return false; }
+    return user ? true : false;
   }
 
-  async signinLocal(authData: AuthDTO) {
-    const user: User = await this.userRepository.findOne({ username: authData.username });
+  async getUser(username: string): Promise<User> {
+    return await this.userRepository.findOne({ username });
+  }
 
-    if (!user) {
-      throw new UnauthorizedException('Username or password is wrong..');
-    }
-    
-    let decodePassword = await bcryptjs.compare(authData.password, user.password);
+  validationUser(username: string, password: string): boolean {
+    if (!username && !password) { return false; }
 
-    if (!decodePassword) {
-      throw new UnauthorizedException('Username or password is wrong.');
-    }
+    if (username.length < 6 || password.length < 8) { return false }
 
-    return user;
+    return true;
+  }
+
+  async updateUser(userId: string, userChange: UpdateUserDTO): Promise<User> {
+    let userUpdate = await this.userRepository.findOne({ id: userId });
+
+    console.log(userUpdate);
+    console.log(userChange);
+
+    return null;
+  }
+
+  async updatePassword(): Promise<User> {
+
+    return null;
   }
 
 }
