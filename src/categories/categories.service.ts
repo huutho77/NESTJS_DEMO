@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from '../entities/category.entity';
-import { Repository } from 'typeorm';
+import { Any, Repository } from 'typeorm';
 import { CreateCategoryDTO } from 'src/dto/category-create.dto';
 import { v4 as uuidv4 } from "uuid";
 
@@ -13,18 +13,30 @@ export class CategoriesService {
     return await this.categoryRepository.find();
   }
 
-  createCategory(newCategory: CreateCategoryDTO) {
-    let { name, description, createAt, updateAt } = newCategory;
-    let id = uuidv4();
+  async createCategory(newCategory: CreateCategoryDTO): Promise<Category> {
+    let { name, description } = newCategory;
 
-    let category: Category = {
-      id: id,
+    // Check existing
+    if (await this.categoryRepository.findOne({ name })) {
+      throw new BadRequestException('Category already existing');
+    }
+
+    let id = uuidv4();
+    let category = this.categoryRepository.create({
+      id,
       name,
       description,
-      create_At: createAt || new Date(),
-      updatee_At: updateAt || new Date()
-    };
+      create_At: new Date(),
+      updatee_At: new Date()
+    });
 
-    return category;
+    return await this.categoryRepository.save(category);
+  }
+
+  async deleteCategory(id: string) {
+    if (!await this.categoryRepository.findOne(id)) {
+      throw new BadRequestException('Product not already existing.')
+    }
+    return await this.categoryRepository.delete(id);
   }
 }
