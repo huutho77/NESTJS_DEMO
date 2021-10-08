@@ -13,6 +13,14 @@ export class CategoriesService {
     return await this.categoryRepository.find();
   }
 
+  async findCategoryById(id: string): Promise<Category> {
+    let category = await this.categoryRepository.findOne(id);
+    if (!category) {
+      throw new NotFoundException('Category not already existing');
+    }
+    return category;
+  }
+
   async createCategory(newCategory: CreateCategoryDTO): Promise<Category> {
     let { name, description } = newCategory;
 

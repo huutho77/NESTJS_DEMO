@@ -1,5 +1,6 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CategoriesService } from 'src/categories/categories.service';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -9,10 +10,12 @@ import { Product } from '../entities/product.entity';
 
 @Injectable()
 export class ProductsService {
-  constructor(@InjectRepository(Product) private productRepository: Repository<Product>) { }
+  constructor(
+    @InjectRepository(Product) private productRepository: Repository<Product>,
+    private categoryService: CategoriesService) { }
 
   async findAllProducts(): Promise<Product[]> {
-    return await this.productRepository.find();
+    return (await this.productRepository.find()).sort((a, b) => a.name.localeCompare(b.name));
   }
 
   async findProductById(id: string): Promise<Product> {
@@ -22,18 +25,28 @@ export class ProductsService {
   }
 
   async createNewProduct(newProduct: CreateProductDTO): Promise<Product> {
+    let { name, quantity, price, description, categoryId } = newProduct;
+    let id = uuidv4();
+
     // Check product exists
-    if (this.productRepository.findOne({ name: newProduct.name })) {
+    if (await this.productRepository.findOne({ name })) {
       throw new ConflictException('Product is already exists.');
     }
 
-    let product = this.productRepository.create(newProduct);
+    let product = this.productRepository.create({
+      id,
+      name,
+      quantity,
+      price,
+      percent_discount: 0,
+      description,
+      amount_view: 0,
+      create_At: new Date(),
+      update_At: new Date(),
+      category: await this.categoryService.findCategoryById(categoryId)
+    });
 
-    product.id = uuidv4();
-    product.create_At = new Date(Date.now());
-    product.update_At = new Date(Date.now());
-
-    return await this.productRepository.save(product);
+    return product;
   }
 
   async updateProduct(id: string, dataChange: UpdateProductDTO): Promise<Product> {
