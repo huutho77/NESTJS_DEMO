@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from '../entities/category.entity';
 import { Any, Repository } from 'typeorm';
-import { CreateCategoryDTO } from 'src/dto/category-create.dto';
+import { CreateCategoryDTO } from '../dto/category-create.dto';
 import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
