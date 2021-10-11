@@ -1,11 +1,11 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { randomUUID } from 'crypto';
 import { CreateUserDTO } from '../dto/user-create.dto';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcryptjs from 'bcryptjs';
 import { UpdateUserDTO } from '../dto/user-update.dto';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UsersService {
@@ -13,20 +13,28 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>) { }
 
   async createNewUser(newUser: CreateUserDTO): Promise<User> {
-    if (await this.checkExist(newUser.username)) {
+    let { username, password, firstname, lastname, address, phone_number, email } = newUser;
+
+    if (await this.checkExist(username)) {
       throw new ConflictException('Username already exist.');
     }
 
-    let user = this.userRepository.create(newUser);
-
     // Hash password before insert into database.
     let saltOrRounds = await bcryptjs.genSalt(12);
-    let hashPassword = await bcryptjs.hash(newUser.password, saltOrRounds);
+    let hashPassword = await bcryptjs.hash(password, saltOrRounds);
 
-    user.id = randomUUID();
-    user.password = hashPassword;
-    user.create_At = new Date();
-    user.update_At = new Date();
+    let user = this.userRepository.create({
+      id: uuidv4(),
+      username,
+      password: hashPassword,
+      firstname,
+      lastname,
+      address,
+      phone_number,
+      email,
+      create_At: new Date(),
+      update_At: new Date()
+    });
 
     return this.userRepository.save(user);
   }

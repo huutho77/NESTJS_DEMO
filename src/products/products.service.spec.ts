@@ -4,9 +4,9 @@ import { Category } from '../entities/category.entity';
 import { Product } from '../entities/product.entity';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
-import { Repository } from "typeorm";
+import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
-import { ProductsModule } from "../products/products.module";
+import { ProductsModule } from '../products/products.module';
 
 describe('ProductsService', () => {
   // Mock data
