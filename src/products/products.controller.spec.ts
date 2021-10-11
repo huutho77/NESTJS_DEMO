@@ -40,11 +40,38 @@ describe('ProductsController', () => {
   })
 
   describe('getAllProducts', () => {
-    it('should return array', async () => {
-      const results = [];
-
-      jest.spyOn(productService, 'findAllProducts').mockResolvedValue(results);
-      expect(await productController.getAllProducts()).toBe(results);
+    it('should be defined', async () => {
+      expect(productController.getAllProducts).toBeDefined();
     });
-  });
+
+    it('should return array', async () => {
+      jest.spyOn(productService, 'findAllProducts').mockResolvedValue([]);
+      expect(await productController.getAllProducts()).toEqual([]);
+    });
+  }); // close describe getAllProducts function
+
+  describe('getProductById', () => {
+    it('should be defined', async () => {
+      expect(productController.getProductById).toBeDefined();
+    });
+  }); // close describe getAllProducts function
+
+  describe('createNewProduct', () => {
+    it('should be defined', async () => {
+      expect(productController.createNewProduct).toBeDefined();
+    });
+  }); // close describe createNewProduct function
+
+  describe('updateProduct', () => {
+    it('should be defined', async () => {
+      expect(productController.updateProduct).toBeDefined();
+    });
+  }); // close describe updateProduct function
+
+  describe('deleteItem', () => {
+    it('should be defined', async () => {
+      expect(productController.deleteItem).toBeDefined();
+    });
+  }); // close describe deleteItem function
+
 });
