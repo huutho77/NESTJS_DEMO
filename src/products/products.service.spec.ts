@@ -6,7 +6,7 @@ import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
-import { ProductsModule } from '../products/products.module';
+import { CategoriesService } from '../categories/categories.service';
 
 describe('ProductsService', () => {
   // Mock data
@@ -45,7 +45,7 @@ describe('ProductsService', () => {
     },
     {
       id: '98c8c1f5-09ab-4105-92ab-212fa7b3d5f4',
-      name: 'Nguyen Huu Tho test 2',
+      name: 'Nguyen Huu Tho test 3',
       quantity: 200,
       price: 100,
       amount_view: 0,
@@ -70,6 +70,11 @@ describe('ProductsService', () => {
           provide: getRepositoryToken(Product),
           useClass: Repository
         },
+        CategoriesService,
+        {
+          provide: getRepositoryToken(Category),
+          useClass: Repository
+        }
       ],
     }).compile();
 
@@ -179,7 +184,7 @@ describe('ProductsService', () => {
     it('shoule be called', () => {
       const id = '25f6b175-f942-4755-8dd5-d4faaa4be3a7';
       jest.spyOn(mockProductRepository, 'findOne').mockResolvedValue(testData[0]);
-      jest.spyOn(mockProductRepository, 'remove').mockResolvedValue(testData[0]);
+      jest.spyOn(mockProductRepository, 'delete').mockResolvedValue({ "raw": [], "affected": 1 });
       jest.spyOn(mockService, 'deleteProduct');
 
       mockService.deleteProduct(id);
@@ -195,7 +200,7 @@ describe('ProductsService', () => {
       });
     });
 
-    it('should be handle exception when catch of remove function', async () => {
+    it('should be handle exception when catch of delete function', async () => {
       const product = {
         id: '25f6b175-f942-4755-8dd5-d4faaa4be3a7',
         name: 'Nguyen Huu Tho test 1',
@@ -212,7 +217,7 @@ describe('ProductsService', () => {
       jest.spyOn(mockProductRepository, 'findOne').mockResolvedValueOnce(product);
 
       return await mockService.deleteProduct(product.id).catch(err => {
-        expect(err).toEqual(TypeError('Cannot read property \'remove\' of undefined'));
+        expect(err).toEqual(TypeError('Cannot read property \'delete\' of undefined'));
       });
     });
 

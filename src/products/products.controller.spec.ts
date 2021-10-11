@@ -4,6 +4,9 @@ import { Repository } from 'typeorm';
 import { Product } from '../entities/product.entity';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
+import { CategoriesModule } from '../categories/categories.module';
+import { CategoriesService } from '../categories/categories.service';
+import { Category } from '../entities/category.entity';
 
 describe('ProductsController', () => {
   let productController: ProductsController;
@@ -18,6 +21,11 @@ describe('ProductsController', () => {
           provide: getRepositoryToken(Product),
           useClass: Repository
         },
+        CategoriesService,
+        {
+          provide: getRepositoryToken(Category),
+          useClass: Repository
+        }
       ]
     }).compile();
 

@@ -6,8 +6,6 @@ import { Repository } from 'typeorm';
 import * as bcryptjs from 'bcryptjs';
 import { UpdateUserDTO } from '../dto/user-update.dto';
 import { v4 as uuidv4 } from 'uuid';
-import { NotFoundError } from 'rxjs';
-import passport from 'passport';
 
 @Injectable()
 export class UsersService {
