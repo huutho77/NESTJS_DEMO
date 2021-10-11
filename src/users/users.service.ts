@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDTO } from '../dto/user-create.dto';
 import { User } from '../entities/user.entity';
@@ -6,6 +6,8 @@ import { Repository } from 'typeorm';
 import * as bcryptjs from 'bcryptjs';
 import { UpdateUserDTO } from '../dto/user-update.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { NotFoundError } from 'rxjs';
+import passport from 'passport';
 
 @Injectable()
 export class UsersService {
@@ -65,9 +67,23 @@ export class UsersService {
     return null;
   }
 
-  async updatePassword(): Promise<User> {
+  async changePassword(id: string, newPassword: string): Promise<User> {
+    let user = await this.userRepository.findOne(id);
 
-    return null;
+    // check exist of user
+    if (!user) { throw new NotFoundException('Username is incorrect.'); }
+
+    if (await bcryptjs.compare(newPassword, user.password)) {
+      throw new BadRequestException('Password cannot be the same as the current password');
+    }
+
+    // Generate hash password for User
+    let saltOrRounds = await bcryptjs.genSalt(12);
+    let hashPassword = await bcryptjs.hash(newPassword, saltOrRounds);
+
+    await this.userRepository.update(id, { password: hashPassword });
+
+    return user;
   }
 
 }
