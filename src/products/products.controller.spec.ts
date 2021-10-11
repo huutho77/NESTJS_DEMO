@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { Product } from '../entities/product.entity';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
-import { CategoriesModule } from '../categories/categories.module';
 import { CategoriesService } from '../categories/categories.service';
 import { Category } from '../entities/category.entity';
 
@@ -44,7 +43,20 @@ describe('ProductsController', () => {
       expect(productController.getAllProducts).toBeDefined();
     });
 
-    it('should return array', async () => {
+    it('should be called', async () => {
+      let spy = jest.spyOn(productController, 'getAllProducts').mockResolvedValue([]);
+      productController.getAllProducts();
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should be when throw exception', async () => {
+      jest.spyOn(productController, 'getAllProducts');
+      return await productController.getAllProducts().catch(err => {
+        expect(err).toEqual(TypeError('Cannot read property \'find\' of undefined'));
+      });
+    });
+
+    it('should return a array', async () => {
       jest.spyOn(productService, 'findAllProducts').mockResolvedValue([]);
       expect(await productController.getAllProducts()).toEqual([]);
     });
