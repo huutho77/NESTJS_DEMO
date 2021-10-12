@@ -18,7 +18,7 @@ export class UsersController {
   }
 
   @Post('change-password')
-  async deleteUser(
+  async changePassword(
     @Body('id') id: string,
     @Body('password') newPassword: string) {
     return await this.userService.changePassword(id, newPassword);

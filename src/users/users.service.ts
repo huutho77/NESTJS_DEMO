@@ -49,18 +49,20 @@ export class UsersService {
   }
 
   validationUser(username: string, password: string): boolean {
-    if (!username && !password) { return false; }
-
-    if (username.length < 6 || password.length < 8) { return false }
-
-    return true;
+    let result = true;
+    if (!username || !password) {
+      result = false;
+    } else if (username.length < 6 || password.length < 8) {
+      result = false;
+    }
+    return result;
   }
 
-  async updateUser(userId: string, userChange: UpdateUserDTO): Promise<User> {
-    let userUpdate = await this.userRepository.findOne({ id: userId });
+  async updateUser(userId: string, valueChange: UpdateUserDTO): Promise<User> {
+    let user = await this.userRepository.findOne({ id: userId });
 
-    console.log(userUpdate);
-    console.log(userChange);
+    console.log(user);
+    console.log(valueChange);
 
     return null;
   }
