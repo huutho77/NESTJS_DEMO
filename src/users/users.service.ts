@@ -49,11 +49,13 @@ export class UsersService {
   }
 
   validationUser(username: string, password: string): boolean {
-    if (!username && !password) { return false; }
-
-    if (username.length < 6 || password.length < 8) { return false }
-
-    return true;
+    let result = true;
+    if (!username || !password) {
+      result = false;
+    } else if (username.length < 6 || password.length < 8) {
+      result = false;
+    }
+    return result;
   }
 
   async updateUser(userId: string, valueChange: UpdateUserDTO): Promise<User> {
