@@ -56,13 +56,9 @@ export class UsersService {
     return true;
   }
 
-  async updateUser(userId: string, userChange: UpdateUserDTO): Promise<User> {
-    let userUpdate = await this.userRepository.findOne({ id: userId });
+  async updateUser(userId: string, valueChange: UpdateUserDTO): Promise<User> {
+    let user = await this.userRepository.findOne({ id: userId });
 
-<<<<<<< Updated upstream
-    console.log(userUpdate);
-    console.log(userChange);
-=======
     if (!user) {
       throw new NotFoundException('Username does not exist');
     }
@@ -70,7 +66,6 @@ export class UsersService {
     let prepareValueUpdate = this.checkAndChange(user, valueChange);
 
     await this.userRepository.update(userId, prepareValueUpdate);
->>>>>>> Stashed changes
 
     return user;
   }
