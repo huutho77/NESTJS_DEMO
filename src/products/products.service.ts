@@ -1,12 +1,12 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoriesService } from '../categories/categories.service';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
 import { CreateProductDTO } from '../dto/product-create.dto';
 import { UpdateProductDTO } from '../dto/product-update.dto';
 import { Product } from '../entities/product.entity';
+import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class ProductsService {
@@ -50,16 +50,11 @@ export class ProductsService {
   }
 
   async updateProduct(id: string, dataChange: UpdateProductDTO): Promise<Product> {
-    let updateProduct = await this.findProductById(id);
+    let product = await this.findProductById(id);
+    let productChanged = await this.checkAndChange(product, dataChange);
 
-    updateProduct.name = this.checkChangeData(updateProduct.name, dataChange.name);
-    updateProduct.quantity = this.checkChangeData(updateProduct.quantity, dataChange.quantity);
-    updateProduct.price = this.checkChangeData(updateProduct.price, dataChange.price);
-    updateProduct.description = this.checkChangeData(updateProduct.description, dataChange.description);
-    updateProduct.create_At = this.checkChangeData(updateProduct.create_At, dataChange.create_At);
-    updateProduct.update_At = new Date();
-
-    return await this.productRepository.save(updateProduct);
+    await this.productRepository.update(id, productChanged);
+    return product;
   }
 
   async deleteProduct(id: string) {
@@ -67,8 +62,19 @@ export class ProductsService {
     return await this.productRepository.delete(id);
   }
 
-  checkChangeData(oldValue: any, newValue: any): any {
-    if (!newValue) { return oldValue; }
-    return oldValue !== newValue ? newValue : oldValue;
+  async checkAndChange(currentProduct: Product, newValue: UpdateProductDTO): Promise<Object> {
+    let results = {};
+    let category = await this.categoryService.findCategoryById(newValue.categoryId);
+
+    for (const key in newValue) {
+      if (newValue[key] !== "" && currentProduct[key] !== newValue[key] && key !== 'categoryId') {
+        results[key] = newValue[key];
+      } else if (newValue[key] !== currentProduct[key]) {
+        results['category'] = category;
+      }
+    }
+    results['update_At'] = new Date();
+
+    return results;
   }
 }

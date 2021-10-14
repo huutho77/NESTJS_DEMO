@@ -3,6 +3,8 @@ export class UpdateProductDTO {
   quantity?: number;
   price?: number;
   description?: string;
+  percent_discount?: number;
+  amount_view?: number;
   create_At?: Date;
-  update_At?: Date;
+  categoryId?: string;
 }
