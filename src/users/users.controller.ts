@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDTO } from '../dto/user-create.dto';
-import { UpdateUserDTO } from 'src/dto/user-update.dto';
+import { UpdateUserDTO } from '../dto/user-update.dto';
 
 @Controller('users')
 export class UsersController {
