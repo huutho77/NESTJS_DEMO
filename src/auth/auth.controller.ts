@@ -1,4 +1,5 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import { AuthDTO } from '../dto/auth.dto';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 
@@ -10,9 +11,8 @@ export class AuthController {
 
   @Post('login')
   async signinLocal(
-    @Body('username') username: string,
-    @Body('password') password: string) {
-
+    @Body() body: AuthDTO) {
+    let { username, password } = body;
     if (!await this.userService.checkExist(username)) {
       throw new BadRequestException('Username or password incorrect.');
     }

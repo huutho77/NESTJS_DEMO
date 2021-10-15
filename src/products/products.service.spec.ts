@@ -10,7 +10,7 @@ import { CategoriesService } from '../categories/categories.service';
 
 describe('ProductsService', () => {
   // Mock data
-  const testCategory: Category = {
+  const mockCategory: Category = {
     id: '92cf3f15-eeee-462a-b8da-41485c2d6f78',
     name: 'Laptop',
     description: '',
@@ -18,7 +18,7 @@ describe('ProductsService', () => {
     updatee_At: new Date(),
   };
 
-  const testData = [
+  const mockProducts = [
     {
       id: '25f6b175-f942-4755-8dd5-d4faaa4be3a7',
       name: 'Nguyen Huu Tho test 1',
@@ -29,7 +29,7 @@ describe('ProductsService', () => {
       percent_discount: 0,
       create_At: new Date(),
       update_At: new Date(),
-      category: testCategory,
+      category: mockCategory,
     },
     {
       id: '15177eb7-e174-48ae-a810-7b5a2a7b48df',
@@ -41,7 +41,7 @@ describe('ProductsService', () => {
       percent_discount: 0,
       create_At: new Date(),
       update_At: new Date(),
-      category: testCategory,
+      category: mockCategory,
     },
     {
       id: '98c8c1f5-09ab-4105-92ab-212fa7b3d5f4',
@@ -53,7 +53,7 @@ describe('ProductsService', () => {
       percent_discount: 0,
       create_At: new Date(),
       update_At: new Date(),
-      category: testCategory,
+      category: mockCategory,
     },
   ];
 
@@ -97,8 +97,8 @@ describe('ProductsService', () => {
     });
 
     it('shoule return products array', async () => {
-      jest.spyOn(mockProductRepository, 'find').mockResolvedValue(testData);
-      expect(await mockService.findAllProducts()).toEqual(testData);
+      jest.spyOn(mockProductRepository, 'find').mockResolvedValue(mockProducts);
+      expect(await mockService.findAllProducts()).toEqual(mockProducts);
     });
   });
 
@@ -109,7 +109,7 @@ describe('ProductsService', () => {
 
     it('should be called', async () => {
       const id = '25f6b175-f942-4755-8dd5-d4faaa4be3a7';
-      jest.spyOn(mockService, 'findProductById').mockImplementation(async () => testData[0]);
+      jest.spyOn(mockService, 'findProductById').mockImplementation(async () => mockProducts[0]);
       mockService.findProductById(id);
       expect(mockService.findProductById).toHaveBeenCalled();
       expect(mockService.findProductById).toHaveBeenCalledWith(id);
@@ -131,48 +131,8 @@ describe('ProductsService', () => {
 
     it('should return a product', async () => {
       const id = '25f6b175-f942-4755-8dd5-d4faaa4be3a7';
-      jest.spyOn(mockProductRepository, 'findOne').mockResolvedValueOnce(testData[0]);
-      expect((await mockService.findProductById(id)).id).toEqual(testData[0].id);
-    });
-  });
-
-  describe('checkChangeData function', () => {
-    it('should be calleed', () => {
-      let newValue = 'Nguyen Huu Tho';
-      let oldValue = 'old do not change';
-
-      let spy = jest.spyOn(mockService, 'checkChangeData');
-
-      mockService.checkChangeData(newValue, oldValue);
-      expect(spy).toHaveBeenCalled();
-    });
-
-    it('should return new value', () => {
-      let newValue = 'Nguyen Huu Tho';
-      let oldValue = 'old do not change';
-      let result = mockService.checkChangeData(oldValue, newValue);
-      expect(result).toEqual(newValue);
-    });
-
-    it('should return old value when newValue is empty', () => {
-      let newValue = '';
-      let oldValue = 'Nguyen Huu Tho';
-      let result = mockService.checkChangeData(oldValue, newValue);
-      expect(result).toEqual(oldValue);
-    });
-
-    it('should return old value when newValue is undefined', () => {
-      let newValue = undefined;
-      let oldValue = 'Nguyen Huu Tho';
-      let result = mockService.checkChangeData(oldValue, newValue);
-      expect(result).toEqual(oldValue);
-    });
-
-    it('should return old value when newValue equal oldValue', () => {
-      let newValue = 'Nguyen Huu Tho';
-      let oldValue = 'Nguyen Huu Tho';
-      let result = mockService.checkChangeData(oldValue, newValue);
-      expect(result).toEqual(oldValue);
+      jest.spyOn(mockProductRepository, 'findOne').mockResolvedValueOnce(mockProducts[0]);
+      expect((await mockService.findProductById(id)).id).toEqual(mockProducts[0].id);
     });
   });
 
@@ -183,7 +143,7 @@ describe('ProductsService', () => {
 
     it('shoule be called', () => {
       const id = '25f6b175-f942-4755-8dd5-d4faaa4be3a7';
-      jest.spyOn(mockProductRepository, 'findOne').mockResolvedValue(testData[0]);
+      jest.spyOn(mockProductRepository, 'findOne').mockResolvedValue(mockProducts[0]);
       jest.spyOn(mockProductRepository, 'delete').mockResolvedValue({ "raw": [], "affected": 1 });
       jest.spyOn(mockService, 'deleteProduct');
 
@@ -211,7 +171,7 @@ describe('ProductsService', () => {
         percent_discount: 0,
         create_At: new Date(),
         update_At: new Date(),
-        category: testCategory,
+        category: mockCategory,
       };
 
       jest.spyOn(mockProductRepository, 'findOne').mockResolvedValueOnce(product);
