@@ -9,13 +9,8 @@ import { join } from 'path';
 
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
-  const PORT_HTTP = +process.env.PORT_HTTP;
-  const PORT_HTTPS = +process.env.PORT_HTTPS;
-
-  // app.setGlobalPrefix('api');
-  // app.enableCors();
-  // json({ limit: '30mb' });
-  // urlencoded({ limit: '30mb', extended: false });
+  const PORT_HTTP = +process.env.PORT_HTTP || 3000;
+  const PORT_HTTPS = +process.env.PORT_HTTPS || 300;
 
   // await app.listen(PORT, () => {
   //   console.log(`Server listening on PORT ${PORT}...`);
@@ -34,8 +29,8 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
   app.enableCors();
-  express.json({ limit: '30mb' });
-  express.urlencoded({ limit: '30mb', extended: true });
+  app.use(express.json({ limit: '30mb' }));
+  app.use(express.urlencoded({ limit: '30mb', extended: true }));
 
   // Just init when setup route already done
   await app.init();

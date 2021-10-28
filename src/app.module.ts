@@ -16,13 +16,13 @@ import { AuthModule } from './auth/auth.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DATABASE_HOTS,
-      port: +process.env.DATABASE_PORT,
-      username: process.env.DATABASE_USERNAME,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      entities: [process.env.DATABASE_ENTITIES],
-      synchronize: Boolean(process.env.DATABASE_SYNCHRONIZE)
+      host: process.env.DB_HOTS,
+      port: +process.env.DB_PORT,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      entities: [process.env.DB_ENTITIES],
+      synchronize: true
     }),
     ProductsModule,
     UsersModule,

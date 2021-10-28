@@ -1,6 +1,16 @@
 version: '3'
 
 services:
+  products-api-app:
+    build: ./
+    container_mame: products-app
+    ports:
+      - 5000:5000
+      - 500:500
+    volumes:
+      - ./:/usr/app
+      - /usr/app/node_modules
+
   mysql-db:
     image: mysql:5.7.10
     container_name: app-mysql-db

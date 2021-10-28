@@ -5,12 +5,14 @@ LABEL description="Development image API program manage products by NestJS Frame
 
 WORKDIR /usr/app
 
-COPY package*.json ./
+COPY package.json package-lock./json ./
 
 RUN npm install
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE 5000
+
+EXPOSE 500
 
 CMD [ "npm", "run", "start:dev" ]
